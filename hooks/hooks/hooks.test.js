@@ -1,47 +1,62 @@
-import { beforeAll, beforeEach, afterEach, afterAll, it, expect } from "vitest";
+import {
+  beforeAll,
+  beforeEach,
+  afterEach,
+  afterAll,
+  it,
+  expect,
+  describe,
+} from "vitest";
 
 import { User } from "./hooks";
 
 const testEmail = "test@test.com";
-function useCreateUser() {
-  return new User(testEmail);
-}
+let user = new User(testEmail);
 
-it("should update the email", () => {
-  const user = useCreateUser();
-  const newTestEmail = "test2@test.com";
-  user.updateEmail(newTestEmail);
+describe("useCreateUser()", () => {
+  beforeAll(() => {
+    console.log("beforeAll");
+  });
+  beforeEach(() => {
+    console.log("beforeEach");
+  });
+  afterEach(() => {
+    user = new User(testEmail);
+  });
+  afterAll(() => {
+    console.log("afterAll");
+  });
 
-  expect(user.email).toBe(newTestEmail);
-});
+  it("should update the email", () => {
+    const newTestEmail = "test2@test.com";
+    user.updateEmail(newTestEmail);
 
-it("should have an email property", () => {
-  const user = useCreateUser();
-  expect(user).toHaveProperty("email");
-});
+    expect(user.email).toBe(newTestEmail);
+  });
 
-it("should store the provided email value", () => {
-  const user = useCreateUser();
-  expect(user.email).toBe(testEmail);
-});
+  it("should have an email property", () => {
+    expect(user).toHaveProperty("email");
+  });
 
-it("should clear the email", () => {
-  const user = useCreateUser();
-  user.clearEmail();
+  it("should store the provided email value", () => {
+    expect(user.email).toBe(testEmail);
+  });
 
-  expect(user.email).toBe("");
-});
+  it("should clear the email", () => {
+    user.clearEmail();
 
-it("should still have an email property after clearing the email", () => {
-  const user = useCreateUser();
-  user.clearEmail();
+    expect(user.email).toBe("");
+  });
 
-  expect(user).toHaveProperty("email");
-});
+  it("should still have an email property after clearing the email", () => {
+    user.clearEmail();
 
-it("should still have an email property after clearing the email but empty()", () => {
-  const user = useCreateUser();
-  user.clearEmail();
+    expect(user).toHaveProperty("email");
+  });
 
-  expect(user.email).toBe("");
+  it("should still have an email property after clearing the email but empty()", () => {
+    user.clearEmail();
+
+    expect(user.email).toBe("");
+  });
 });
