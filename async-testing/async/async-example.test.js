@@ -1,5 +1,5 @@
 import { it, describe, expect } from "vitest";
-import { generateToken } from "./async-example.js";
+import { generateToken, generateTokenPromise } from "./async-example.js";
 
 describe("generateToken()", () => {
   it("Should generate a token value if provided userEmail and doneFn", async () => {
@@ -16,5 +16,14 @@ describe("generateToken()", () => {
         }
       });
     });
+  });
+});
+
+describe("generateTokenPromise", () => {
+  it("should generate token v if provided userEmail and fn", async () => {
+    const dummyEmail = "email123@gmail.com";
+
+    expect(generateTokenPromise(dummyEmail)).resolves.toBeDefined();
+    // expect(generateTokenPromise(dummyEmail)).resolves.toBe(2);
   });
 });
