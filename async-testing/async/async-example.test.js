@@ -2,17 +2,19 @@ import { it, describe, expect } from "vitest";
 import { generateToken } from "./async-example.js";
 
 describe("generateToken()", () => {
-  it("Should generate a token value if provided userEmail and doneFn", (done) => {
+  it("Should generate a token value if provided userEmail and doneFn", async () => {
     const dummyEmail = "email123@gmail.com";
 
-    generateToken(dummyEmail, (_, token) => {
-      try {
-        expect(token).toBeDefined();
-        // expect(token).toBe(2);
-        done();
-      } catch (err) {
-        done(err);
-      }
+    await new Promise((resolve, reject) => {
+      generateToken(dummyEmail, (err, token) => {
+        try {
+          expect(err).toBeNull();
+          expect(token).toBeDefined();
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      });
     });
   });
 });
