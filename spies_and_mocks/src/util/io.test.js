@@ -36,3 +36,10 @@ it("writeData() saves file with expected name", async () => {
 
   expect(fs.writeFile).toHaveBeenCalledWith(testFileName, testData);
 });
+
+it("writeData() saves file with expected name", async () => {
+  const testData = "test data here yay";
+  const testFileName = "textYay.txt";
+
+  await expect(writeData(testData, testFileName)).resolves.toBeUndefined();
+});
