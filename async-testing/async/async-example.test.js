@@ -20,10 +20,17 @@ describe("generateToken()", () => {
 });
 
 describe("generateTokenPromise", () => {
-  it("should generate token v if provided userEmail and fn", async () => {
+  it("should generate token v if provided userEmail and fn", () => {
     const dummyEmail = "email123@gmail.com";
 
-    expect(generateTokenPromise(dummyEmail)).resolves.toBeDefined();
+    return expect(generateTokenPromise(dummyEmail)).resolves.toBeDefined();
+    // expect(generateTokenPromise(dummyEmail)).resolves.toBe(2);
+  });
+
+  it("should generate token v if provided userEmail and fn", async () => {
+    const dummyEmail = "email123@gmail.com";
+    const result = await generateTokenPromise(dummyEmail);
+    expect(result).toBeDefined();
     // expect(generateTokenPromise(dummyEmail)).resolves.toBe(2);
   });
 });
