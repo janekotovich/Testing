@@ -5,8 +5,13 @@ const testResData = {
   testKey: "testData",
 };
 
+const wrongDataTypeError = "Data not a string!";
+
 const testFn = vi.fn((url, optionsObj) => {
   return new Promise((resolve, reject) => {
+    if (typeof optionsObj.body !== "string") {
+      return reject(wrongDataTypeError);
+    }
     const testRes = {
       ok: true,
       json() {
@@ -26,4 +31,17 @@ it("should return any available res data", async () => {
   const fnCall2 = sendDataRequest(testData);
   expect(fnCall).toEqual(testResData);
   await expect(fnCall2).resolves.toEqual(testResData);
+});
+
+it("Should stringify our data", async () => {
+  const testData = { key: { smth: "No idea what" } };
+  let errorMsg;
+
+  try {
+    await sendDataRequest(testData);
+  } catch (err) {
+    errorMsg = wrongDataTypeError;
+  }
+
+  expect(errorMsg).not.toBe(wrongDataTypeError);
 });
