@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "http-server -c-1",
-    "test": "vitest --run"
+    "test": "vitest --run --environment happy-dom",
+    "test:w": "vitest --reporter verbose"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,6 @@
   },
   "devDependencies": {
     "happy-dom": "^2.55.0",
-    "vitest": "^0.9.3"
+    "vitest": "4.1.8"
   }
 }
