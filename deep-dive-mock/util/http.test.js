@@ -44,4 +44,6 @@ it("Should stringify our data", async () => {
   }
 
   expect(errorMsg).not.toBe(wrongDataTypeError);
+  // Below - only to test that our rejection is working!
+  // expect(errorMsg).toBe(wrongDataTypeError);
 });
