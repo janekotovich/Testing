@@ -37,4 +37,14 @@ describe("showError()", () => {
     // showError(someError);
     // expect(errorP).not.toBe(null);
   });
+
+  it("Cleans out original err container after appending", () => {
+    const someError = "Some big error BAM";
+    const erroEl = document.getElementById("errors");
+    const errorP = erroEl.firstElementChild;
+    showError(someError);
+    showError("Bada-Boom");
+
+    expect(erroEl.textContent).toBe("Bada-Boom");
+  });
 });
