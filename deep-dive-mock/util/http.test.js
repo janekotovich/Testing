@@ -1,5 +1,6 @@
 import { expect, it, vi } from "vitest";
 import { sendDataRequest } from "./http.js";
+import { HttpError } from "./errors.js";
 
 const testResData = {
   testKey: "testData",
@@ -7,7 +8,7 @@ const testResData = {
 
 const wrongDataTypeError = "Data not a string!";
 
-const testFn = vi.fn((url, optionsObj) => {
+const testFetch = vi.fn((url, optionsObj) => {
   return new Promise((resolve, reject) => {
     if (typeof optionsObj.body !== "string") {
       return reject(wrongDataTypeError);
@@ -23,7 +24,8 @@ const testFn = vi.fn((url, optionsObj) => {
     resolve(testRes);
   });
 });
-vi.stubGlobal("fetch", testFn);
+
+vi.stubGlobal("fetch", testFetch);
 
 it("should return any available res data", async () => {
   const testData = { key: "TestData" };
@@ -46,4 +48,27 @@ it("Should stringify our data", async () => {
   expect(errorMsg).not.toBe(wrongDataTypeError);
   // Below - only to test that our rejection is working!
   // expect(errorMsg).toBe(wrongDataTypeError);
+});
+
+it("Should throw http err in case of non okay res", async () => {
+  testFetch.mockImplementationOnce((url, optionsObj) => {
+    return new Promise((resolve, reject) => {
+      if (typeof optionsObj.body !== "string") {
+        return reject(wrongDataTypeError);
+      }
+      const testRes = {
+        ok: false,
+        json() {
+          return new Promise((res, rej) => {
+            res(testResData);
+          });
+        },
+      };
+      resolve(testRes);
+    });
+  });
+  const testData = { key: { smth: "No idea what" } };
+  const smthWh = sendDataRequest(testData);
+
+  await expect(smthWh).rejects.toBeInstanceOf(HttpError);
 });
